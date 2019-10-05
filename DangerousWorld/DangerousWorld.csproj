@@ -50,23 +50,23 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\ONILib\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\ONILib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\ONILib\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\ONILib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="PLib, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PLib.2.11.2\lib\net35\PLib.dll</HintPath>
+    <Reference Include="PLib, Version=2.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\PLib.2.12.0\lib\net35\PLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\ONILib\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\ONILib\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\ONILib\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\ONILib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

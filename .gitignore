@@ -17,6 +17,7 @@
 -\ Animations/
 .gitignore
 .gitattributes
+**/[Pp]roperties/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

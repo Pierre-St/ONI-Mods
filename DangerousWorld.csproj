@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props" Condition="Exists('packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props')" />
+  <Import Project="packages\ILMerge.3.0.29\build\ILMerge.props" Condition="Exists('packages\ILMerge.3.0.29\build\ILMerge.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2FB95E1A-A9DD-48A4-9378-40ABC2324648}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>PierreStirnweiss.DangerousWorld</RootNamespace>
+    <AssemblyName>DangerousWorld</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\ONILib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\ONILib\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="PLib, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\PLib.2.11.2\lib\net35\PLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\ONILib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\ONILib\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DangerousWorldFallDamagePatches.cs" />
+    <Compile Include="DangerousWorldStrings.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="DangerousWorldPatches.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\ILMerge.3.0.29\build\ILMerge.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\ILMerge.3.0.29\build\ILMerge.props'))" />
+    <Error Condition="!Exists('packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\ILRepack.MSBuild.Task.2.0.13\build\ILRepack.MSBuild.Task.props'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>"$(ILMergeConsolePath)" /ndebug /out:$(TargetName)Merged.dll $(TargetName).dll PLib.dll /targetplatform:v2,C:/Windows/Microsoft.NET/Framework64/v2.0.50727</PostBuildEvent>
+  </PropertyGroup>
+</Project>

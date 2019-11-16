@@ -1,0 +1,11 @@
+{ //Damage formula: (height - damageHeightLimit) * 10 / damageDivider
+
+  "damageHeightLimit":2,		// height above which damage is applied
+  "damageDivider":1,			// damageDivider in the above formula
+  "crippleEnabled":true,		// if crippled effect should be applied
+  "crippleHeightLimit":5,		// height above which the crippled effect test takes place: Random(0,100) < height * 10
+  "crippledDuration":20,		// number of turns the crippled effect lasts
+  "crippledModifier":-25,		// modifier to the Athletic trait from crippled
+  "deathEnabled":true,			// if instant death should be enabled
+  "deathHeightLimit":25			// heigh above which instant death occurs
+}

@@ -128,7 +128,7 @@ namespace PierreStirnweiss.DangerousWorld
                     Update("evaluate_aggroLevel_aggro", (System.Action<AggroMonitor.Instance, float>)((smi, dt) => smi.EvaluateAggroLevel()), UpdateRate.SIM_200ms);
             }
 
-            public class Instance : GameStateMachine<AggroMonitor, AggroMonitor.Instance, IStateMachineTarget, AggroMonitor.Def>.GameInstance
+            new public class Instance : GameStateMachine<AggroMonitor, AggroMonitor.Instance, IStateMachineTarget, AggroMonitor.Def>.GameInstance
             {
                 public FactionAlignment alignment;
                 private readonly List<FactionAlignment> fiends = new List<FactionAlignment>();

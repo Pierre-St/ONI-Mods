@@ -58,8 +58,11 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\ONILib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="PLib, Version=2.12.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PLib.2.12.0\lib\net35\PLib.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PLib, Version=2.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\PLib.2.17.1\lib\net35\PLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
@@ -70,8 +73,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DangerousAggroTest.cs" />
+    <Compile Include="DangerousWorldAggroCritters.cs" />
+    <Compile Include="DangerousWorldAggroCrittersPatches.cs" />
     <Compile Include="DangerousWorldFallDamagePatches.cs" />
+    <Compile Include="DangerousWorldOptions.cs" />
     <Compile Include="DangerousWorldStrings.cs" />
+    <Compile Include="PositionMonitor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

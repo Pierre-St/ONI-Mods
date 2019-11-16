@@ -24,6 +24,10 @@ namespace PierreStirnweiss.DangerousWorld
             /// <param name="__navigator">The current FallMonitor.Instance.navigator.</param>
             internal static void Postfix(FallMonitor.Instance __instance, Navigator ___navigator)
             {
+                //First disable completly if FallDamageDifficulty == None
+                if (DangerousWorldOptions.Instance.FallDamageDifficultyOption == FallDamageDifficulty.None)
+                    return;
+
                 if (__instance.gameObject.HasTag(GameTags.Minion))
                 {
 #if DEBUG
@@ -71,6 +75,10 @@ namespace PierreStirnweiss.DangerousWorld
 
             internal static void Postfix(FallMonitor.Instance __instance, Navigator ___navigator)
             {
+                //First disable completly if FallDamageDifficulty == None
+                if (DangerousWorldOptions.Instance.FallDamageDifficultyOption == FallDamageDifficulty.None)
+                    return;
+
                 if (__instance.gameObject.HasTag(GameTags.Minion))
                 {
                     if (!dupesDict.ContainsKey(__instance.gameObject))
@@ -94,19 +102,29 @@ namespace PierreStirnweiss.DangerousWorld
                         Health dupeHealth = __instance.gameObject.GetComponent<Health>();
                         if (dupeHealth != null)
                         {
-                            if (dist > 2)
+                            if (dist > DangerousWorldOptions.Instance.fallOptions.damageHeightLimit)
                             {
-                                dupeHealth.Damage((dist - 2) * 10f);
-                                if ((dist > 5) && (UnityEngine.Random.Range((int)0, (int)100) <= dist * 10))
+#if DEBUG
+                                PUtil.LogDebug(("Fall damage. Difficulty: {0}, deathEnable: {1}, deathHeight: {2}").F(DangerousWorldOptions.Instance.FallDamageDifficultyOption.ToString(), DangerousWorldOptions.Instance.fallOptions.deathEnabled, DangerousWorldOptions.Instance.fallOptions.deathHeightLimit));
+#endif
+                                if (DangerousWorldOptions.Instance.fallOptions.deathEnabled && dist > DangerousWorldOptions.Instance.fallOptions.deathHeightLimit)
                                 {
+                                    __instance.gameObject.GetSMI<DeathMonitor.Instance>().Kill(Db.Get().Deaths.Slain); //TODO: use own death type
+                                }
+                                else
+                                {
+                                    dupeHealth.Damage((dist - DangerousWorldOptions.Instance.fallOptions.damageHeightLimit) * 10f / DangerousWorldOptions.Instance.fallOptions.damageDivider); //TODO: make it use own death type
+                                    if (DangerousWorldOptions.Instance.fallOptions.crippleEnabled && (dist > DangerousWorldOptions.Instance.fallOptions.crippleHeightLimit) && (UnityEngine.Random.Range((int)0, (int)100) <= dist * 10))
+                                    {
 #if DEBUG
-                                    PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
+                                        PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
 #endif
-                                    if (!__instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorldCrippled"))
-                                        __instance.gameObject.AddOrGet<Effects>().Add("DangerousWorldCrippled", true);
+                                        if (!__instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorldCrippled"))
+                                            __instance.gameObject.AddOrGet<Effects>().Add("DangerousWorldCrippled", true);
 #if DEBUG
-                                    PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
+                                        PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
 #endif
+                                    }
                                 }
                             }
                         }
@@ -132,6 +150,10 @@ namespace PierreStirnweiss.DangerousWorld
             /// <param name="__navigator">The current FallMonitor.Instance.navigator.</param>
             internal static void Postfix(FallMonitor.Instance __instance, Navigator ___navigator)
             {
+                //First disable completly if FallDamageDifficulty == None
+                if (DangerousWorldOptions.Instance.FallDamageDifficultyOption == FallDamageDifficulty.None)
+                    return;
+
                 if (__instance.gameObject.HasTag(GameTags.Minion))
                 {
                     if (!dupesDict.ContainsKey(__instance.gameObject))
@@ -155,19 +177,29 @@ namespace PierreStirnweiss.DangerousWorld
                         Health dupeHealth = __instance.gameObject.GetComponent<Health>();
                         if (dupeHealth != null)
                         {
-                            if (dist > 2)
+                            if (dist > DangerousWorldOptions.Instance.fallOptions.damageHeightLimit)
                             {
-                                dupeHealth.Damage((dist - 2) * 10f);
-                                if ((dist > 5) && (UnityEngine.Random.Range((int)0, (int)100) <= dist * 10))
+#if DEBUG
+                                PUtil.LogDebug(("Fall damage. Difficulty: {0}, deathEnable: {1}, deathHeight: {2}").F(DangerousWorldOptions.Instance.FallDamageDifficultyOption.ToString(), DangerousWorldOptions.Instance.fallOptions.deathEnabled, DangerousWorldOptions.Instance.fallOptions.deathHeightLimit));
+#endif
+                                if (DangerousWorldOptions.Instance.fallOptions.deathEnabled && dist > DangerousWorldOptions.Instance.fallOptions.deathHeightLimit)
                                 {
+                                    __instance.gameObject.GetSMI<DeathMonitor.Instance>().Kill(Db.Get().Deaths.Slain); //TODO: use own death type
+                                }
+                                else
+                                {
+                                    dupeHealth.Damage((dist - DangerousWorldOptions.Instance.fallOptions.damageHeightLimit) * 10f / DangerousWorldOptions.Instance.fallOptions.damageDivider); //TODO: make it use own death type
+                                    if (DangerousWorldOptions.Instance.fallOptions.crippleEnabled && (dist > DangerousWorldOptions.Instance.fallOptions.crippleHeightLimit) && (UnityEngine.Random.Range((int)0, (int)100) <= dist * 10))
+                                    {
 #if DEBUG
-                                    PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
+                                        PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
 #endif
-                                    if (!__instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorldCrippled"))
-                                        __instance.gameObject.AddOrGet<Effects>().Add("DangerousWorldCrippled", true);
+                                        if (!__instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorldCrippled"))
+                                            __instance.gameObject.AddOrGet<Effects>().Add("DangerousWorldCrippled", true);
 #if DEBUG
-                                    PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
+                                        PUtil.LogDebug(("Dupe: {0}, hasEffect Crippled: {1}").F(__instance.gameObject.name, __instance.gameObject.AddOrGet<Effects>().HasEffect("DangerousWorlCrippled")));
 #endif
+                                    }
                                 }
                             }
                         }
@@ -190,6 +222,10 @@ namespace PierreStirnweiss.DangerousWorld
             /// <param name="__navigator">The current FallMonitor.Instance.navigator.</param>
             internal static void Postfix(FallMonitor.Instance __instance, Navigator ___navigator)
             {
+                //First disable completly if FallDamageDifficulty == None
+                if (DangerousWorldOptions.Instance.FallDamageDifficultyOption == FallDamageDifficulty.None)
+                    return;
+
 #if DEBUG
                 PUtil.LogDebug(("MountLadder: {0}").F(__instance.gameObject.name));
 #endif
@@ -225,6 +261,10 @@ namespace PierreStirnweiss.DangerousWorld
             /// <param name="__navigator">The current FallMonitor.Instance.navigator.</param>
             internal static void Postfix(FallMonitor.Instance __instance, Navigator ___navigator)
             {
+                //First disable completly if FallDamageDifficulty == None
+                if (DangerousWorldOptions.Instance.FallDamageDifficultyOption == FallDamageDifficulty.None)
+                    return;
+
 #if DEBUG
                 PUtil.LogDebug(("MountPole: {0}").F(__instance.gameObject.name));
 #endif

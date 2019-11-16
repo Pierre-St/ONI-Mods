@@ -1,10 +1,10 @@
 ﻿using Harmony;
 using PeterHan.PLib;
+using PeterHan.PLib.Options;
 using Klei.AI;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-
 
 namespace PierreStirnweiss.DangerousWorld {
     /// <summary>
@@ -15,6 +15,8 @@ namespace PierreStirnweiss.DangerousWorld {
         public static void OnLoad()
         {
             PUtil.InitLibrary();
+            POptions.RegisterOptions(typeof(DangerousWorldOptions));
+            DangerousWorldOptions.Instance.InitialiseOptions();
         }
 
         /// <summary>
@@ -40,13 +42,14 @@ namespace PierreStirnweiss.DangerousWorld {
             internal static void Postfix(Db __instance)
             {
                 /// ____________________________ New effects used throughout the mod ________________________
-                
-                Effect crippledEffect = new Effect("DangerousWorldCrippled", (String)DangerousWorldStrings.CRIPPLED_EFFECT_TITLE, (string)DangerousWorldStrings.CRIPPLED_EFFECT_DESC, 6000.0f, true, true, true);
-                crippledEffect.Add(new AttributeModifier("Athletics", -20, (string)DangerousWorldStrings.CRIPPLED_EFFECT_TITLE, false));
+
+                PUtil.LogDebug("DB initialise postfix");
+                Effect crippledEffect = new Effect("DangerousWorldCrippled", (String)DangerousWorldStrings.CRIPPLED_EFFECT_TITLE, (string)DangerousWorldStrings.CRIPPLED_EFFECT_DESC, (float)(DangerousWorldOptions.Instance.fallOptions.crippledDuration * 600), true, true, true);
+                crippledEffect.Add(new AttributeModifier("Athletics", DangerousWorldOptions.Instance.fallOptions.crippledModifier, (string)DangerousWorldStrings.CRIPPLED_EFFECT_TITLE, false));
                 __instance.effects.Add(crippledEffect);
 
 #if DEBUG
-                Effect test;
+/*                Effect test;
                 AttributeModifier attributeModifier;
 
                 for (int idx = 0; idx < __instance.effects.Count; ++idx)
@@ -58,7 +61,7 @@ namespace PierreStirnweiss.DangerousWorld {
                         attributeModifier = test.SelfModifiers[idx1];
                         PUtil.LogDebug(("Effect attribute modifier: {0}, attribute: {1}, value: {2}").F(attributeModifier.Description, attributeModifier.AttributeId, attributeModifier.Value));
                     }
-                }
+                }*/
 #endif
             }
         }

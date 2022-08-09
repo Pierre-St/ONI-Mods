@@ -1,6 +1,6 @@
 ﻿using Klei.AI;
 using UnityEngine;
-using PeterHan.PLib;
+using PeterHan.PLib.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,23 +17,31 @@ namespace PierreStirnweiss.DangerousWorld
             GameObject m_master;
             public AggroCritter()
             {
+#if DEBUG
                 PUtil.LogDebug("In AggroCritter cstr");
+#endif
             }
 
-            public void SetMaster(GameObject master)
+                public void SetMaster(GameObject master)
             {
+#if DEBUG
                 PUtil.LogDebug(("In set Master: {0}").F(master));
+#endif
                 m_master = master;
                 PositionMonitor.PositionMonitorLayer layer = PositionMonitor.Instance.Layer("DW_Hatches");
 
                 if (layer == null)
                 {
+#if DEBUG
                     PUtil.LogDebug("Null layer");
+#endif
                     layer = PositionMonitor.Instance.AddLayer("DW_Hatches");
                 }
                 Debug.Assert(layer != null, "Hatch layer is null");
 
+#if DEBUG
                 PUtil.LogDebug(("Layer: {0}").F(layer.m_name.ToString()));
+#endif
 
                 m_entry = PositionMonitor.Instance.Add(m_master, Grid.CellToXY(Grid.PosToCell(m_master)).x, Grid.CellToXY(Grid.PosToCell(m_master)).y, layer);
 
@@ -47,7 +55,6 @@ namespace PierreStirnweiss.DangerousWorld
 
             public void OnCellChange()
             {
-                PUtil.LogDebug("In update position callback");
                 PositionMonitor.Instance.UpdatePosition(Grid.CellToXY(Grid.PosToCell(m_master)).x,
                 Grid.CellToXY(Grid.PosToCell(m_master)).y,
                 m_entry);
@@ -164,17 +171,23 @@ namespace PierreStirnweiss.DangerousWorld
                 {
                     if (this.gameObject.HasTag(GameTags.Creatures.Wild) && this.def.HasAggroType(Def.AggroTypes.Crowd))
                     {
-                        //PUtil.LogDebug(("Evaluate aggro level hasTag wild: {0}").F(this.gameObject.HasTag(GameTags.Creatures.Wild)));
+#if DEBUG
+                        PUtil.LogDebug(("Evaluate aggro level hasTag wild: {0}").F(this.gameObject.HasTag(GameTags.Creatures.Wild)));
                         //PUtil.LogDebug("EvaluateAggroLevel");
+#endif
                         EvaluateBuddiesAndFiends();
 
                         if (buddiesCount >= 2 * this.fiends.Count) /// for now, make it configurable
                         {
-                            //PUtil.LogDebug(("Aggro: buddies count: {0}").F(buddiesCount));
+#if DEBUG
+                            PUtil.LogDebug(("Aggro: buddies count: {0}").F(buddiesCount));
+#endif
                             this.sm.isAggro.Set(true, smi);
                             if (!this.WillAttack())
                             {
-                                //PUtil.LogDebug("Hatch is subdued");
+#if DEBUG
+                                PUtil.LogDebug("Hatch is subdued");
+#endif
                                 this.GoTo(this.sm.aggro.subdued);
                             }
                             else
@@ -184,9 +197,10 @@ namespace PierreStirnweiss.DangerousWorld
                                     this.mainFiend = PickBestThreat();
                                     if (mainFiend != (GameObject)null)
                                     {
-                                        //PUtil.LogDebug(("Hatch found ennemy: {0}").F(mainFiend.name));
+#if DEBUG
+                                        PUtil.LogDebug(("Hatch found ennemy: {0}").F(mainFiend.name));
+#endif
                                         this.GetSMI<ThreatMonitor.Instance>().SetMainThreat(mainFiend);
-                                        //PUtil.LogDebug("After setMainThreat");
                                         this.GoTo(this.sm.aggro.attack);
                                         this.GetSMI<ThreatMonitor.Instance>().GoToThreatened();
                                     }
@@ -195,7 +209,9 @@ namespace PierreStirnweiss.DangerousWorld
                         }
                         else
                         {
-                            //PUtil.LogDebug(("Calm: buddies count: {0}").F(buddiesCount));
+#if DEBUG
+                            PUtil.LogDebug(("Calm: buddies count: {0}").F(buddiesCount));
+#endif
                             this.sm.isAggro.Set(false, smi);
                         }
                     }
@@ -203,26 +219,36 @@ namespace PierreStirnweiss.DangerousWorld
 
                 public void EvaluateBuddiesAndFiends()
                 {
-                    //PUtil.LogDebug("EvaluateBuddiesAndFiends");
+#if DEBUG
+                    PUtil.LogDebug("EvaluateBuddiesAndFiends");
+#endif
                     this.fiends.Clear();
                     //this.buddies.Clear();
-                    
-                    //PUtil.LogDebug(("Creature : {0}, pos {1}").F(this.gameObject.name, Grid.PosToCell((KMonoBehaviour)this.navigator)));
+
+#if DEBUG
+                    PUtil.LogDebug(("Creature : {0}, pos {1}").F(this.gameObject.name, Grid.PosToCell((KMonoBehaviour)this.navigator)));
+#endif
                     Extents gridCheck = new Extents(Grid.PosToCell((KMonoBehaviour)this.navigator), maxThreatDistance);
 
                     buddiesCount = PositionMonitor.Instance.CountEntries(gridCheck, PositionMonitor.Instance.Layer("DW_Hatches"));
-                    //PUtil.LogDebug(("Number of components found: {0}").F(buddiesCount));
+#if DEBUG
+                    PUtil.LogDebug(("Number of buddies found: {0}").F(buddiesCount));
+#endif
 
                     ListPool<PositionMonitor.PositionMonitorEntry, PositionMonitor>.PooledList entitiesList = ListPool<PositionMonitor.PositionMonitorEntry, PositionMonitor>.Allocate();
                     PositionMonitor.Instance.GatherEntries(gridCheck, PositionMonitor.Instance.Layer("DW_Minions"), entitiesList);
-                    //PUtil.LogDebug(("Number of minions found: {0}").F(entitiesList.Count));
+#if DEBUG
+                    PUtil.LogDebug(("Number of components found: {0}").F(entitiesList.Count));
+#endif
                     for (int index = 0; index < entitiesList.Count; ++index)
                     {
                         FactionAlignment cmp = entitiesList[index].m_object.GetComponent<FactionAlignment>();
                         if (cmp != null && this.navigator.CanReach((IApproachable)cmp.attackable) && cmp.GetComponent<MinionBrain>() != null && cmp.GetComponent<MinionBrain>().HasTag(GameTags.Minion))
                         {
-                            //PUtil.LogDebug(("Component {0} has tag minion: {1}").F(cmp.name, cmp.GetComponent<MinionBrain>().HasTag(GameTags.Minion)));
-                             this.fiends.Add(cmp);
+#if DEBUG
+                            PUtil.LogDebug(("Component {0} has tag minion: {1}").F(cmp.name, cmp.GetComponent<MinionBrain>().HasTag(GameTags.Minion)));
+#endif
+                            this.fiends.Add(cmp);
                         }
                     }
                     entitiesList.Recycle();

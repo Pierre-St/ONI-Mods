@@ -21,6 +21,17 @@ namespace PierreStirnweiss.DangerousWorld
         public static LocString AGGRO_CRITTER_SUBDUED_TITLE = "Subdued";
         public static LocString AGGRO_CRITTER_SUBDUED_DESC = "Catching its breath for the next attack.";
 
+        // ProstheticsFabricator
+        public static LocString PROSTHETICS_FABRICATOR_NAME = "Prosthetics Fabricator";
+        public static LocString PROSTHETICS_FABRICATOR_DESC = "Searching through a drawer, a janitor stumbled across a book called \"Prosthetics for dummies: The six million dollar dupe\"\r\nNobody knows what a dollar is, but the schematics inside the book look really promising.";
+        public static LocString PROSTHETICS_FABRICATOR_EFFECT = "This advanced machine can manufacture every dupe's part, better";
+
+        public static LocString PROSTHETICS_SPLINTER_NAME = "Splinter";
+        public static LocString PROSTHETICS_SPLINTER_DESC = "Ensures my Duplicants can remain functionnal with broken limbs.";
+        public static LocString PROSTHETICS_SPLINTER_EFFECT = "Patch-up a dupe with the Crippled effect.\n\nMust be applied at a Triage cot.";
+        public static LocString PROSTHETICS_SPLINTER_RECIPE_DESC = "A splinter for patching-up broken limbs";
+        public static LocString PROSTHETICS_SPLINTER_GENERICNAME = "Prosthesis";
+
         // Confined
         //public static LocString CONFINED_TITLE = "Confined";
         //public static LocString CONFINED_DESC = "These Duplicants are stuck in a small space:";

@@ -1,5 +1,5 @@
-﻿using Harmony;
-using PeterHan.PLib;
+﻿using HarmonyLib;
+using PeterHan.PLib.Core;
 using Klei.AI;
 using UnityEngine;
 using System;
@@ -84,7 +84,7 @@ namespace PierreStirnweiss.DangerousWorld
                     if (!dupesDict.ContainsKey(__instance.gameObject))
                     {
 #if DEBUG
-                        PUtil.LogError("Unknown dupe tryEntombedEscape");
+                        //PUtil.LogError("Unknown dupe tryEntombedEscape");
 #endif
                         dupesDict.Add(__instance.gameObject, -1);
                     }

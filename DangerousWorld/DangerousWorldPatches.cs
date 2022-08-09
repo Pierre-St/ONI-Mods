@@ -1,5 +1,9 @@
-﻿using Harmony;
-using PeterHan.PLib;
+﻿using HarmonyLib;
+using PeterHan.PLib.Core;
+using PeterHan.PLib.UI;
+using PeterHan.PLib.AVC;
+using PeterHan.PLib.PatchManager;
+using PeterHan.PLib.Buildings;
 using PeterHan.PLib.Options;
 using Klei.AI;
 using UnityEngine;
@@ -10,13 +14,41 @@ namespace PierreStirnweiss.DangerousWorld {
     /// <summary>
     /// Patches which will be applied via annotations for DangerousWorld.
     /// </summary>
-    public class DangerousWorldPatches
+    public sealed class DangerousWorldPatches : KMod.UserMod2
     {
-        public static void OnLoad()
+        internal static DangerousWorldOptions Options { get; private set; }
+/*
+        /// <summary>
+        /// Loads settings when the mod starts up.
+        /// </summary>
+        [PLibMethod(RunAt.OnStartGame)]
+        internal static void LoadSettings()
         {
-            PUtil.InitLibrary();
-            POptions.RegisterOptions(typeof(DangerousWorldOptions));
+            var newOptions = POptions.ReadSettings<DangerousWorldOptions>();
+            if (newOptions != null)
+                Options = newOptions;
+
             DangerousWorldOptions.Instance.InitialiseOptions();
+            ///            PUtil.LogDebug("DangerousWorld settings: {0}".F(Options.?????));
+        }
+*/
+        public override void OnLoad(Harmony harmony)
+        {
+            base.OnLoad(harmony);
+
+            PUtil.InitLibrary(true);
+            //new PBuildingManager().Register(DangerousWorldProstheticsFabricatorConfig.CreateBuilding());
+
+            PUtil.LogDebug("OnLoad PLib initialised");
+
+            Options = new DangerousWorldOptions();
+            new POptions().RegisterOptions(this, typeof(DangerousWorldOptions));
+            new PPatchManager(harmony).RegisterPatchClass(typeof(DangerousWorldPatches));
+            new PVersionCheck().Register(this, new SteamVersionChecker());
+
+            DangerousWorldOptions.Instance.InitialiseOptions();
+
+            PUtil.LogDebug("OnLoad base end");
         }
 
         /// <summary>
@@ -49,7 +81,7 @@ namespace PierreStirnweiss.DangerousWorld {
                 __instance.effects.Add(crippledEffect);
 
 #if DEBUG
-/*                Effect test;
+                Effect test;
                 AttributeModifier attributeModifier;
 
                 for (int idx = 0; idx < __instance.effects.Count; ++idx)
@@ -61,7 +93,7 @@ namespace PierreStirnweiss.DangerousWorld {
                         attributeModifier = test.SelfModifiers[idx1];
                         PUtil.LogDebug(("Effect attribute modifier: {0}, attribute: {1}, value: {2}").F(attributeModifier.Description, attributeModifier.AttributeId, attributeModifier.Value));
                     }
-                }*/
+                }
 #endif
             }
         }
